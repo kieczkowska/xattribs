@@ -15,7 +15,7 @@ Use `--json` to print output in JSON format.
 <ins>Directory containing the QuarantineEvents database</ins>: I don't know, help! (_so - default_)  
 <ins>Output format: easy to read please (_so - default_)  
   
-👉 Command to use:
+👉  Command to use:
 `python3 xattribs.py /Users/George/Desktop`
 
 ### Example 2
@@ -24,7 +24,7 @@ Use `--json` to print output in JSON format.
 <ins>Name of the database file</ins>: `QuarantineEventsV2`  
 <ins>Output format</ins>: JSON  
 
-👉 Command to use:
+👉  Command to use:
 `python3 xattribs.py /Users/Nina/Desktop/forensic_evidence/files /Users/Nina/Desktop/forensic_evidence/db/quarantine/QuarantineEventsV2 --json`
 
 
