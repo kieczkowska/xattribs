@@ -16,7 +16,7 @@ Use `--json` to print output in JSON format.
 <ins>Output format: easy to read please (_so - default_)  
   
 👉 Command to use:
-`python3 xattribs.py /Users/george/Desktop`
+`python3 xattribs.py /Users/George/Desktop`
 
 ### Example 2
 <ins>Directory containing files to be checked</ins>: `/Users/Nina/Desktop/forensic_evidence/files`  
@@ -25,6 +25,6 @@ Use `--json` to print output in JSON format.
 <ins>Output format</ins>: JSON  
 
 👉 Command to use:
-`python3 xattribs.py /Users/nina/Desktop/forensic_evidence/files /Users/nina/Desktop/forensic_evidence/db/quarantine/QuarantineEventsV2 --json`
+`python3 xattribs.py /Users/Nina/Desktop/forensic_evidence/files /Users/Nina/Desktop/forensic_evidence/db/quarantine/QuarantineEventsV2 --json`
 
 
