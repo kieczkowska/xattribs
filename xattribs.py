@@ -53,14 +53,11 @@ parser.add_argument('dir', default=path,
                     help='path to directory containing files of interest')
 parser.add_argument('--db', default=path2db,
                     help='''path to the QuarantineEvents database; by default {}'''.format(path2db))
-parser.add_argument('--pretty-print', action='store_true',
-                    help='human-readable output')
 parser.add_argument('--json', action='store_true',
                     help='JSON output')
 args = parser.parse_args()
 path = args.dir
 path2db = args.db
-pretty_print = args.pretty_print
 json_print = args.json
 
 file_list = list_airdropped_files(path)
@@ -73,7 +70,9 @@ try:
         if row[0] in file_list.keys():
             file_list[row[0]]["sender_name"] = row[2]
 
-    if pretty_print == True:
+    if json_print == True:
+        print(json.dumps(file_list))
+    else:
         for file in file_list:
             uid = file
             print('''\nFile {}
@@ -83,8 +82,7 @@ try:
                                       file_list[uid]["file_path"],
                                       file_list[uid]["download_time"],
                                       file_list[uid]["sender_name"]))
-    elif json_print == True:
-        print(json.dumps(file_list))
+
 
 except sqlite3.OperationalError:
     print("#### ERROR ####\nOops. You're right you gave the right path to db?")
