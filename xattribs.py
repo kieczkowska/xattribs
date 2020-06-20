@@ -41,18 +41,18 @@ def list_airdropped_files(directory):
         print("Files in {} without the com.apple.quarantine attribute: {}\n".format(directory, noq_files))
         return airdropped_files
 
+stream = os.popen('id -un')
+username = stream.read().strip()
 # feel free to complete this with your values for faster usage
 path = ""
-path2db = ""
+path2db = "/Users/{}/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2".format(username)
 pretty_print = False
 
-parser = argparse.ArgumentParser(description='''xattribs - a tool to view metadata of AirDropped files in a given directory.
-Requires the path to the QuarantineEvents database and the directory of files to be checked.''')
+parser = argparse.ArgumentParser(description="xattribs - a tool to view metadata of AirDropped files in a given directory.")
 parser.add_argument('dir', default=path,
                     help='path to directory containing files of interest')
-parser.add_argument('db', default=path2db,
-                    help='''path to the QuarantineEvents database;
-                    it is usually /Users/<username>/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2''')
+parser.add_argument('--db', default=path2db,
+                    help='''path to the QuarantineEvents database; by default {}'''.format(path2db))
 parser.add_argument('--pretty-print', action='store_true',
                     help='human-readable output')
 parser.add_argument('--json', action='store_true',
