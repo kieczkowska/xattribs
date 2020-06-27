@@ -22,10 +22,12 @@ def pretty_print(file_list, flag):
             uid = file
             print('''\nFile {}
             Path: {}
+            Browser name: {}
             Download time: {}
             Origin URL: {}
             Data URL: {}'''.format(file_list[uid]["file_name"],
                                       file_list[uid]["file_path"],
+                                      file_list[uid]["browser_name"],
                                       file_list[uid]["download_time"],
                                       file_list[uid]["origin_url"],
                                       file_list[uid]["data_url"]))
@@ -94,7 +96,7 @@ airdropped_files, downloaded_files = list_airdropped_files(path)
 try:
     conn = sqlite3.connect(path2db)
     conn.row_factory = sqlite3.Row
-    cursor = conn.execute("SELECT LSQuarantineEventIdentifier as EventID, datetime(LSQuarantineTimeStamp + strftime('%s','2001-01-01'), 'unixepoch') as TimestampUTC, LSQuarantineSenderName as SenderName, LSQuarantineOriginURLString as OriginURL, LSQuarantineDataURLString as DataURL FROM LSQuarantineEvent WHERE LSQuarantineAgentName IN ('sharingd', 'Chrome', 'Safari', 'Opera', 'Brave', 'Firefox');")
+    cursor = conn.execute("SELECT LSQuarantineEventIdentifier as EventID, datetime(LSQuarantineTimeStamp + strftime('%s','2001-01-01'), 'unixepoch') as TimestampUTC, LSQuarantineSenderName as SenderName, LSQuarantineOriginURLString as OriginURL, LSQuarantineDataURLString as DataURL, LSQuarantineAgentName as Agent FROM LSQuarantineEvent WHERE LSQuarantineAgentName IN ('sharingd', 'Chrome', 'Safari', 'Opera', 'Brave', 'Firefox');")
 
     for row in cursor:
         if row[0] in airdropped_files.keys():
@@ -102,6 +104,7 @@ try:
         elif row[0] in downloaded_files.keys():
             downloaded_files[row[0]]["origin_url"] = row[3]
             downloaded_files[row[0]]["data_url"] = row[4]
+            downloaded_files[row[0]]["browser_name"] = row[5]
 
     if json_print == True:
         print("\n\n\n    💨💨💨 AirDropped files: \n", json.dumps(airdropped_files))
