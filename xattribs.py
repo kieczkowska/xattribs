@@ -35,7 +35,6 @@ def pretty_print(file_list, flag):
 
     print("\n\n")
 
-# redo this to also do non-airdrop stuffs
 def hex_to_int(string):
     string = ''.join(reversed(string.split()))
     return int(string,16)
@@ -63,12 +62,11 @@ def list_airdropped_files(directory):
                     temp["download_time"] = date
 
 
-                    #if quarantine.split(";")[3] != "":
-                    if agent == "sharingd":
-                        airdropped_files[quarantine.split(";")[-1]] = temp
-                    elif agent in {"Chrome", "Brave", "Opera", "Firefox", "Google Chrome"}:
-                        downloaded_files[quarantine.split(";")[-1]] = temp
-
+                    if quarantine.split(";")[3] != "":
+                        if agent == "sharingd":
+                            airdropped_files[quarantine.split(";")[-1]] = temp
+                        elif agent in {"Chrome", "Brave", "Opera", "Firefox", "Safari"}:
+                            downloaded_files[quarantine.split(";")[-1]] = temp
 
 
                 except FileNotFoundError:
