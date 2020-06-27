@@ -7,6 +7,7 @@ import sys
 import json
 
 def pretty_print(file_list, flag):
+
     if flag == "airdrop":
         for file in file_list:
             uid = file
@@ -31,7 +32,8 @@ def pretty_print(file_list, flag):
                                       file_list[uid]["download_time"],
                                       file_list[uid]["origin_url"],
                                       file_list[uid]["data_url"]))
-    return
+
+    print("\n\n")
 
 # redo this to also do non-airdrop stuffs
 def hex_to_int(string):
@@ -43,35 +45,44 @@ def list_airdropped_files(directory):
         airdropped_files = {}
         downloaded_files = {}
         noq_files = []
-        for file in os.listdir(directory):
-            try:
-                quarantine = xattr.getxattr("{}/{}".format(directory, file), "com.apple.quarantine")
-                quarantine = quarantine.decode("utf-8")
-                agent = quarantine.split(";")[2]
+        if os.path.isdir(directory):
+            for file in os.listdir(directory):
+                try:
+                    quarantine = xattr.getxattr("{}/{}".format(directory, file), "com.apple.quarantine")
+                    quarantine = quarantine.decode("utf-8")
+                    agent = quarantine.split(";")[2]
 
-                temp = {}
-                time = quarantine.split(";")[1]
-                unixTS = 978307200
-                date = dt.datetime.fromtimestamp(hex_to_int(time))
-                date = str(date)
+                    temp = {}
+                    time = quarantine.split(";")[1]
+                    unixTS = 978307200
+                    date = dt.datetime.fromtimestamp(hex_to_int(time))
+                    date = str(date)
 
-                temp["file_name"] = file
-                temp["file_path"] = "{}/{}".format(directory, file)
-                temp["download_time"] = date
-
-                if agent == "sharingd":
-                    airdropped_files[quarantine.split(";")[-1]] = temp
-                elif agent in {"Chrome", "Brave", "Opera", "Firefox", "Google Chrome"}:
-                    downloaded_files[quarantine.split(";")[-1]] = temp
+                    temp["file_name"] = file
+                    temp["file_path"] = "{}{}".format(directory, file)
+                    temp["download_time"] = date
 
 
-            except FileNotFoundError:
-                print("#### ERROR ####\nOops. Are you sure the given directory exists?")
-                sys.exit(1)
-            except OSError as error:
-                noq_files.append(file)
-        print("Files in {} without the com.apple.quarantine attribute: {}\n".format(directory, noq_files))
-        return airdropped_files, downloaded_files
+                    #if quarantine.split(";")[3] != "":
+                    if agent == "sharingd":
+                        airdropped_files[quarantine.split(";")[-1]] = temp
+                    elif agent in {"Chrome", "Brave", "Opera", "Firefox", "Google Chrome"}:
+                        downloaded_files[quarantine.split(";")[-1]] = temp
+
+
+
+                except FileNotFoundError:
+                        print("#### ERROR ####\nOops. Are you sure the given directory exists?")
+                        sys.exit(1)
+                except OSError as error:
+                        noq_files.append(file)
+            print("\nFiles in {} without the com.apple.quarantine attribute: {}\n".format(directory, noq_files))
+            return airdropped_files, downloaded_files
+        else:
+            print("#### ERROR ####\nOops. Are you sure the given directory exists?")
+            sys.exit(1)
+
+
 
 stream = os.popen('id -un')
 username = stream.read().strip()
@@ -107,8 +118,9 @@ try:
             downloaded_files[row[0]]["browser_name"] = row[5]
 
     if json_print == True:
-        print("\n\n\n    💨💨💨 AirDropped files: \n", json.dumps(airdropped_files))
-        print("\n\n\n    🔥🔥🔥 Downloaded files: \n", json.dumps(downloaded_files))
+        dict = {"aidropped_files": airdropped_files,
+                "downloaded_files": downloaded_files}
+        print(json.dumps(dict))
     else:
         print("\n\n\n    💨💨💨 AirDropped files: \n")
         pretty_print(airdropped_files, "airdrop")
