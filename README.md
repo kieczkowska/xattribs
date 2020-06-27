@@ -1,5 +1,8 @@
 # 🔎 xattribs
-Scripts facilitating forensic analysis of macOS's AirDrop artefacts.
+A script facilitating forensic analysis of macOS's extended attributes. Returns extended attributes extracted from both `xattr` and `LSQuarantiveEventsV2` database of files received via AirDrop or downloaded using using Chrome, Firefox, Opera, Brave or Safari.  
+The data extracted reveals:
+   * for AirDropped files: file path, time received, sender name
+   * for files downloaded using internet browsers: file path, browser name, time downloaded, origin URL, specific data URL.
 
 ## 🛠️ Setup
 Install dependencies by running `pip install -r requirements.txt`.
