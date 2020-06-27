@@ -12,7 +12,7 @@ def pretty_print(file_list, flag):
             uid = file
             print('''\nFile {}
             Path: {}
-            Download time: {}
+            Time received: {}
             Sender name: {}'''.format(file_list[uid]["file_name"],
                                       file_list[uid]["file_path"],
                                       file_list[uid]["download_time"],
@@ -23,7 +23,7 @@ def pretty_print(file_list, flag):
             print('''\nFile {}
             Path: {}
             Browser name: {}
-            Download time: {}
+            Time downloaded: {}
             Origin URL: {}
             Data URL: {}'''.format(file_list[uid]["file_name"],
                                       file_list[uid]["file_path"],
