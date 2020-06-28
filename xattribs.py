@@ -58,7 +58,7 @@ def list_airdropped_files(directory):
                     date = str(date)
 
                     temp["file_name"] = file
-                    temp["file_path"] = "{}{}".format(directory, file)
+                    temp["file_path"] = "{}/{}".format(directory, file)
                     temp["download_time"] = date
 
 
